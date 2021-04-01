@@ -1,5 +1,6 @@
 import os
 import string
+import environ
 
 from django.contrib.messages import constants as messages_constants
 
@@ -8,6 +9,9 @@ from celery.schedules import crontab
 from decouple import Csv, config
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+env = environ.Env()
+environ.Env.read_env()
 
 
 # ==============================================================================
@@ -48,9 +52,18 @@ ROOT_URLCONF = 'colossus.urls'
 WSGI_APPLICATION = 'colossus.wsgi.application'
 
 DATABASES = {
-    'default': dj_database_url.config(
-        default=config('DATABASE_URL', default='sqlite:///%s' % os.path.join(BASE_DIR, 'db.sqlite3'))
-    )
+    # 'default': dj_database_url.config(
+    #     default=config('DATABASE_URL', default='sqlite:///%s' % os.path.join(BASE_DIR, 'db.sqlite3'))
+    # )
+
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': env('colossus_db_name'),
+        'USER': env('colossus_db_user'),
+        'PASSWORD': env('colossus_db_pass'),
+        'HOST': 'localhost',
+        'PORT': '',
+    }
 }
 
 INTERNAL_IPS = [
