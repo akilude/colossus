@@ -63,6 +63,9 @@ def send_campaign_email(email, context, to, connection=None, is_test=False):
         headers['List-Subscribe'] = ', '.join(list_subscribe_header)
         headers['List-Unsubscribe'] = ', '.join(list_unsubscribe_header)
 
+    print('^'*100)
+    print(connection)
+
     message = EmailMultiAlternatives(
         subject=subject,
         body=plain_text_message,
