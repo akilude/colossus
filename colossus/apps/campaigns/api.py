@@ -79,7 +79,7 @@ def send_campaign_email(email, context, to, connection=None, is_test=False):
     try:
         print(message)
         message.send(fail_silently=False)
-         print('sent')
+        print('sent')
         return True
     except SMTPException:
         print('error')
