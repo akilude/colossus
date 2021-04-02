@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'colossus.apps.lists',
     'colossus.apps.notifications',
     'colossus.apps.subscribers',
+
+    'django_ses',
 ]
 
 SITE_ID = 1
@@ -163,24 +165,39 @@ PRIVATE_MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'media/private')
 # EMAIL SETTINGS
 # ==============================================================================
 
-EMAIL_SUBJECT_PREFIX = '[Colossus] '
+# EMAIL_SUBJECT_PREFIX = '[Colossus] '
 
-SERVER_EMAIL = config('SERVER_EMAIL', default='root@localhost')
+# SERVER_EMAIL = config('SERVER_EMAIL', default='root@localhost')
 
 DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='webmaster@localhost')
 
-EMAIL_BACKEND = config('EMAIL_BACKEND', default='django.core.mail.backends.console.EmailBackend')
+# EMAIL_BACKEND = config('EMAIL_BACKEND', default='django.core.mail.backends.console.EmailBackend')
 
-EMAIL_HOST = config('EMAIL_HOST', default='localhost')
+# EMAIL_HOST = config('EMAIL_HOST', default='localhost')
 
-EMAIL_PORT = config('EMAIL_PORT', default=587, cast=int)
+# EMAIL_PORT = config('EMAIL_PORT', default=587, cast=int)
 
-EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='root')
+# EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='root')
 
-EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
+# EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
 
 EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=True, cast=bool)
 
+
+
+EMAIL_BACKEND = 'django_ses.SESBackend'
+
+# These are optional -- if they're set as environment variables they won't
+# need to be set here as well
+AWS_ACCESS_KEY_ID = config('COLOSSUS_AWS_KEY_ID', default='')
+AWS_SECRET_ACCESS_KEY = config('COLOSSUS_AWS_SECRET', default='')
+
+# Additionally, if you are not using the default AWS region of us-east-1,
+# you need to specify a region, like so:
+AWS_SES_REGION_NAME = config('COLOSSUS_AWS_REGION', default='localhost')
+AWS_SES_REGION_ENDPOINT = config('COLOSSUS_AWS_REGION_ENDPOINT', default='email.us-west-2.amazonaws.com')
+
+AWS_SES_AUTO_THROTTLE = 0.5 # (default; safety factor applied to rate limit)
 
 # ==============================================================================
 # AUTHENTICATION AND AUTHORIZATION SETTINGS
