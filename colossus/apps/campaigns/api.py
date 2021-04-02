@@ -77,10 +77,18 @@ def send_campaign_email(email, context, to, connection=None, is_test=False):
     message.attach_alternative(rich_text_message, 'text/html')
 
     try:
+        print(message)
         message.send(fail_silently=False)
+         print('sent')
         return True
     except SMTPException:
+        print('error')
+        print(SMTPException)
         logger.exception('Could not send email "%s" due to SMTP error.' % email.uuid)
+        return False
+    except Exception as e:
+        print('error')
+        print(e)
         return False
 
 
