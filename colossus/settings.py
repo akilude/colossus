@@ -165,9 +165,9 @@ PRIVATE_MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'media/private')
 # EMAIL SETTINGS
 # ==============================================================================
 
-# EMAIL_SUBJECT_PREFIX = '[Colossus] '
+EMAIL_SUBJECT_PREFIX = '[Colossus] '
 
-# SERVER_EMAIL = config('SERVER_EMAIL', default='root@localhost')
+SERVER_EMAIL = config('SERVER_EMAIL', default='root@localhost')
 
 DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='webmaster@localhost')
 
