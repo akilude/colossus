@@ -52,8 +52,8 @@ def send_campaign_email(email, context, to, connection=None, is_test=False):
     for mail_addr in to:
         try:
             url = CHECK_SUBSCRIPTION_ENDPOINT+"?email="+getEmailFormString(mail_addr)
-            r = requests.get(url,verify=False, timeout=2)
-            if(r.status_code!=200):
+            r = requests.get(url, timeout=2)
+            if(r.status_code==200 and r.text=="true"):
                 # bounced email/unsubbed email
                 try:
                     to.remove(mail_addr)
