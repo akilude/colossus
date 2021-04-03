@@ -33,15 +33,34 @@ def get_test_email_context(**kwargs):
     return kwargs
 
 
+def getEmailFormString(string):
+    try:
+        arr = string.strip().split(' ')
+        for part in arr:
+            if('@' in part):
+                return part.replace('<','').replace('>','')
+    except Exception as e:
+        print(e)
+    return string
+
+
 def send_campaign_email(email, context, to, connection=None, is_test=False):
     if isinstance(to, str):
         to = [to, ]
 
     # connect to our server and remove any emails that have bounced 
     for mail_addr in to:
-        print(mail_addr)
-        r = requests.get(CHECK_SUBSCRIPTION_ENDPOINT+'?email='+mail_addr)
-        print(r.status_code)
+        try:
+            url = CHECK_SUBSCRIPTION_ENDPOINT+"?email="+getEmailFormString(mail_addr)
+            r = requests.get(url,verify=False, timeout=2)
+            if(r.status_code!=200):
+                # bounced email/unsubbed email
+                try:
+                    to.remove(mail_addr)
+                except Exception as e:
+                    print(e)
+        except Exception as e:
+            print(e)
 
     if(len(to)==0):
         return False
