@@ -63,9 +63,6 @@ def send_campaign_email(email, context, to, connection=None, is_test=False):
         headers['List-Subscribe'] = ', '.join(list_subscribe_header)
         headers['List-Unsubscribe'] = ', '.join(list_unsubscribe_header)
 
-    print('^'*100)
-    print(connection)
-
     message = EmailMultiAlternatives(
         subject=subject,
         body=plain_text_message,
@@ -77,17 +74,12 @@ def send_campaign_email(email, context, to, connection=None, is_test=False):
     message.attach_alternative(rich_text_message, 'text/html')
 
     try:
-        print(message)
         message.send(fail_silently=False)
-        print('sent')
         return True
     except SMTPException:
-        print('error')
-        print(SMTPException)
         logger.exception('Could not send email "%s" due to SMTP error.' % email.uuid)
         return False
     except Exception as e:
-        print('error')
         print(e)
         return False
 
