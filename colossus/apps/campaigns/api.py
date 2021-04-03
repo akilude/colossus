@@ -9,11 +9,16 @@ from django.utils.translation import gettext as _
 
 import html2text
 
+import requests
+from decouple import config
+
 from colossus.apps.campaigns.constants import CampaignStatus
 from colossus.apps.subscribers.constants import ActivityTypes
 from colossus.utils import get_absolute_url
 
 logger = logging.getLogger(__name__)
+
+CHECK_SUBSCRIPTION_ENDPOINT = config('CHECK_SUBSCRIPTION_ENDPOINT', default="")
 
 
 def get_test_email_context(**kwargs):
@@ -31,6 +36,15 @@ def get_test_email_context(**kwargs):
 def send_campaign_email(email, context, to, connection=None, is_test=False):
     if isinstance(to, str):
         to = [to, ]
+
+    # connect to our server and remove any emails that have bounced 
+    for mail_addr in to:
+        print(mail_addr)
+        r = requests.get(CHECK_SUBSCRIPTION_ENDPOINT+'?email='+mail_addr)
+        print(r.status_code)
+
+    if(len(to)==0):
+        return False
 
     subject = email.subject
     if is_test:
