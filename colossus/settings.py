@@ -65,6 +65,7 @@ DATABASES = {
         'PASSWORD': env('colossus_db_pass'),
         'HOST': 'localhost',
         'PORT': '',
+        'CONN_MAX_AGE': 3600,
     }
 }
 
